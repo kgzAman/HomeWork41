@@ -1,4 +1,4 @@
-package com.company;
+package server;
 
 
 import java.io.*;
@@ -22,24 +22,36 @@ public class EchoServer {
     public void  run(){
         try (ServerSocket server = new ServerSocket(port)){
             try ( var clientSocket = server.accept()){
+                System.out.println("Program is connected");
                 handle(clientSocket);
             }
 
         } catch (IOException e) {
-            var formatMsg = "Вероятнее всего порт %s занят. %n";
+            var formatMsg = "Port is busy!";
             System.out.printf(formatMsg,port);
             e.printStackTrace();
         }
     }
 
     private void handle(Socket socket) throws IOException{
+
      InputStream input = socket.getInputStream();
-     InputStreamReader isr = new InputStreamReader(input, "UTF-8");
-     var scanner = new Scanner(isr);
-     try (scanner){
+     OutputStream outPut = socket.getOutputStream();
+
+     PrintWriter writer = new PrintWriter(outPut);
+     var scanner = new Scanner(new InputStreamReader(input, StandardCharsets.UTF_8));
+     var sc1= new Scanner (System.in,StandardCharsets.UTF_8);
+
+
+     try (scanner;writer;sc1){
          while (true){
+
              String message = scanner.nextLine().strip();
              System.out.printf("Got: %s%n",message);
+
+             writer.write(message);
+             writer.write(System.lineSeparator());
+             writer.flush();
              if("bye".equals(message.toLowerCase())){
                  System.out.printf(" Bye Bye!%n");
                  return;

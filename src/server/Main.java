@@ -1,6 +1,4 @@
-package com.company;
-
-import com.company.edu.EchoClient;
+package server;
 
 import java.io.IOException;
 
@@ -11,6 +9,5 @@ public class Main {
         EchoServer echoServer = new EchoServer(8787);
         echoServer.run();
 
-        EchoClient.connectTo(8787).run();
     }
 }
