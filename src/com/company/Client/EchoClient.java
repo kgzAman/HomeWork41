@@ -34,7 +34,7 @@ public class EchoClient {
                 while (true){
                     System.out.println("Enter message: ");
                     String message = scanner.nextLine();
-                    writer.write(new StringBuilder(message).reverse().toString());
+                    writer.write(message);
                     writer.write(System.lineSeparator());
                     writer.flush();
 

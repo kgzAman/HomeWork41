@@ -1,12 +1,16 @@
 package server;
 
 
+import com.sun.jdi.Value;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class EchoServer {
     private final int port;
@@ -49,7 +53,8 @@ public class EchoServer {
              String message = scanner.nextLine().strip();
              System.out.printf("Got: %s%n",message);
 
-             writer.write(message);
+
+             writer.write(answer(String.valueOf(message)));
              writer.write(System.lineSeparator());
              writer.flush();
              if("bye".equals(message.toLowerCase())){
@@ -59,7 +64,24 @@ public class EchoServer {
          }
      }catch (NoSuchElementException ex){
          System.out.println("Client dropped the connection!");
-     }
+        }
+
     }
+
+    public String answer(String message){
+
+        HashMap<String,String > answers = new HashMap<>();
+
+        answers.put("date", LocalDate.now().toString());
+        answers.put("time",(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime())));
+        answers.put("reverse", String.valueOf((new StringBuilder(message).reverse())));
+        answers.put("upper",message.toUpperCase());
+        answers.put("bye",message);
+        answers.put(message,message);
+
+        return answers.get(message);
+
+    }
+
 
 }
